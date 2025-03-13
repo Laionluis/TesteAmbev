@@ -163,5 +163,4 @@ Se precisar de ajuda, entre em contato via 📧 [ferreiralaionl@gmail.com](mailt
 
 ---
 
-🚀 Agora sua API está pronta para ser testada! Se houver dúvidas ou sugestões, me avise. 🎯🔥
 
