@@ -12,7 +12,7 @@ using TesteAmbev.Data;
 namespace TesteAmbev.Migrations
 {
     [DbContext(typeof(SalesDbContext))]
-    [Migration("20250312231810_InitialCreate")]
+    [Migration("20250312234004_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

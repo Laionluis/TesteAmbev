@@ -11,11 +11,13 @@ namespace TesteAmbev.Features.Handlers
     {
         private readonly ISaleRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ILogger<CreateSaleHandler> _logger;
 
-        public CreateSaleHandler(ISaleRepository repository, IMapper mapper)
+        public CreateSaleHandler(ISaleRepository repository, IMapper mapper, ILogger<CreateSaleHandler> logger)
         {
             _repository = repository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<SaleDTO> Handle(CreateSaleCommand request, CancellationToken cancellationToken)
@@ -25,6 +27,7 @@ namespace TesteAmbev.Features.Handlers
             sale.SaleDate = DateTime.UtcNow;
             sale.TotalAmount = sale.Items.Sum(item => ApplyDiscount(item));
             await _repository.AddAsync(sale);
+            _logger.LogInformation("Sale Created: {SaleId}", sale.Id);
             return _mapper.Map<SaleDTO>(sale);
         }
 

@@ -11,16 +11,23 @@ namespace TesteAmbev.Features.Handlers
     {
         private readonly SalesDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<GetSaleHandler> _logger;
 
-        public GetSaleHandler(SalesDbContext context, IMapper mapper)
+        public GetSaleHandler(SalesDbContext context, IMapper mapper, ILogger<GetSaleHandler> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<SaleDTO> Handle(GetSaleQuery request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Fetching sale with ID: {SaleId}", request.SaleId);
             var sale = await _context.Sales.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id == request.SaleId);
+            if (sale == null)
+            {
+                _logger.LogWarning("Sale with ID {SaleId} not found.", request.SaleId);
+            }
             return sale == null ? null : _mapper.Map<SaleDTO>(sale);
         }
     }
