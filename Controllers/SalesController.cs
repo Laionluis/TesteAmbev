@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TesteAmbev.DTOs;
 using TesteAmbev.Features.Commands;
@@ -8,6 +9,7 @@ namespace TesteAmbev.Controllers
 {
     [ApiController]
     [Route("api/sales")]
+    [Authorize]
     public class SalesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -37,6 +39,13 @@ namespace TesteAmbev.Controllers
         {
             await _mediator.Send(new CancelSaleCommand(id));
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<SaleDTO>>> GetSales([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            var result = await _mediator.Send(new GetSalesQuery(page, pageSize));
+            return Ok(result);
         }
     }
 }
